@@ -160,9 +160,14 @@ def context_config_tab():
                     st.metric("Team", config_info['team_name'])
                 
                 with col2:
-                    st.metric("Stage", config_info['current_stage'].title())
+                    # Fix: Get the enum value first, then call title()
+                    stage_display = config_info['current_stage'].value.title() if config_info['current_stage'] else "N/A"
+                    st.metric("Stage", stage_display)
+                    
+                    # Fix: Handle session_type enum properly
                     if config_info['session_type']:
-                        st.metric("Session", config_info['session_type'])
+                        session_display = config_info['session_type'].value if hasattr(config_info['session_type'], 'value') else str(config_info['session_type'])
+                        st.metric("Session", session_display)
                 
                 with col3:
                     st.metric("Circuit", config_info['circuit'])
@@ -430,11 +435,15 @@ def sidebar():
             agent_info = st.session_state.agent.get_agent_info()
             st.write(f"**Driver:** {agent_info['racer_name']}")
             st.write(f"**Team:** {agent_info['team_name']}")
-            st.write(f"**Stage:** {agent_info['current_stage'].title()}")
+            
+            # Fix: Handle enum properly in sidebar too
+            stage_display = agent_info['current_stage'].value.title() if agent_info['current_stage'] else "N/A"
+            st.write(f"**Stage:** {stage_display}")
             st.write(f"**Mood:** {agent_info['mood'].title()}")
             
             if agent_info.get('last_result'):
-                st.write(f"**Last Result:** {agent_info['last_result'].title()}")
+                result_display = agent_info['last_result'].value.title() if hasattr(agent_info['last_result'], 'value') else str(agent_info['last_result'])
+                st.write(f"**Last Result:** {result_display}")
             
         st.markdown("---")
         st.markdown("### ℹ️ About")
@@ -458,7 +467,7 @@ def main():
     sidebar()
     
     # Main content area
-    tab1, tab2 = st.tabs(["🏁 Context Config", "🏎️ Agent Interaction"])
+    tab1, tab2 = st.tabs(["🏁 Context Config", "🚀 Agent Interaction"])
     
     with tab1:
         context_config_tab()
