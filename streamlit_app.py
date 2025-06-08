@@ -53,14 +53,6 @@ def login_page():
                     st.rerun()
                 else:
                     st.error("Invalid username or password")
-        
-        # Demo credentials info
-        st.info("""
-        **Demo Credentials:**
-        - Username: `admin` / Password: `f1racing2024`
-        - Username: `driver` / Password: `speedster123`
-        - Username: `fan` / Password: `motorsport`
-        """)
 
 def logout():
     """Handle logout"""
