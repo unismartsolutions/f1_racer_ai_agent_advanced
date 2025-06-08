@@ -1,0 +1,23 @@
+[theme]
+# Set base theme to dark mode
+base = "dark"
+
+# Customize colors for a more black theme
+primaryColor = "#FF4B4B"  # Racing red accent color
+backgroundColor = "#0E1117"  # Very dark (almost black) background
+secondaryBackgroundColor = "#1A1C24"  # Dark gray for sidebar/widgets
+textColor = "#FAFAFA"  # Bright white text for contrast
+
+# Other Streamlit configurations
+[server]
+enableCORS = false
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
+
+[runner]
+fastReruns = true
+
+[logger]
+level = "WARNING"

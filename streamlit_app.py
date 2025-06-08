@@ -34,8 +34,29 @@ def initialize_session_state():
 
 def login_page():
     """Display login page"""
-    st.title("🏎️ F1 Racer AI Agent")
-    st.subheader("Please login to continue")
+    # Center align CSS
+    st.markdown("""
+    <style>
+    .centered {
+        text-align: center;
+        padding-bottom: 20px;
+    }
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        background-color: rgba(0,0,0,0.1);
+        font-size: 14px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Centered title and subtitle
+    st.markdown("<h1 class='centered'>🏎️ F1 Racer AI Agent</h1>", unsafe_allow_html=True)
+    st.markdown("<h3 class='centered'>Please login to continue</h3>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     
@@ -53,6 +74,9 @@ def login_page():
                     st.rerun()
                 else:
                     st.error("Invalid username or password")
+    
+    # Footer
+    st.markdown("<div class='footer'>Demo application created by Tevin Richard</div>", unsafe_allow_html=True)
 
 def logout():
     """Handle logout"""
@@ -65,7 +89,7 @@ def logout():
 
 def context_config_tab():
     """Context configuration tab"""
-    st.header("🏁 Context Configuration")
+    st.header("Context Configuration")
     
     col1, col2 = st.columns(2)
     
@@ -415,7 +439,7 @@ def handle_agent_thoughts():
 def sidebar():
     """Display sidebar with user info and controls"""
     with st.sidebar:
-        st.markdown(f"### 👋 Welcome, {st.session_state.username}!")
+        st.markdown(f"### Welcome, {st.session_state.username}!")
         
         if st.button("🚪 Logout"):
             logout()
@@ -440,10 +464,16 @@ def sidebar():
         st.markdown("---")
         st.markdown("### ℹ️ About")
         st.markdown("""
-        F1 Racer AI Agent powered by:
-        - 🤖 LangChain
-        - 🧠 Azure OpenAI GPT-4o-mini
-        - ⚡ Streamlit
+        Web Application for interacting with an F1 AI agent that simulates a racing driver.
+        
+        How to use: 
+        
+        1. Context Configuration: Set up the agent with the preffered agent details
+        2. Click "Configure Agent" to initialize the agent with the provided context.
+        3. Agent Interaction: Choose an interaction type from the drop down list.
+        4. Provide additional input as required and click the corresponding button to generate the output.
+        5. View the generated output and interaction history below.
+        6. Logout when done.
         """)
 
 def main():
@@ -459,7 +489,7 @@ def main():
     sidebar()
     
     # Main content area
-    tab1, tab2 = st.tabs(["🏁 Context Config", "🚀 Agent Interaction"])
+    tab1, tab2 = st.tabs(["🛠️ Context Config", "🚀 Agent Interaction"])
     
     with tab1:
         context_config_tab()
