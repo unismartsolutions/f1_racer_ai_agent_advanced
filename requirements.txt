@@ -1,0 +1,63 @@
+# Core web framework
+streamlit>=1.28.0
+
+# LangChain and Azure OpenAI
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-core>=0.1.0
+openai>=1.12.0
+
+# Azure SDK
+azure-identity>=1.15.0
+azure-core>=1.29.0
+
+# Data processing and utilities
+pandas>=1.5.0
+numpy>=1.24.0
+python-dotenv>=1.0.0
+
+# Date and time handling
+python-dateutil>=2.8.0
+
+# HTTP requests
+requests>=2.31.0
+urllib3>=1.26.0
+
+# JSON and data serialization
+pydantic>=2.5.0
+
+# Text processing (fallback)
+textblob>=0.17.0
+
+# Async support
+aiohttp>=3.9.0
+asyncio-throttle>=1.0.0
+
+# Caching and performance
+cachetools>=5.3.0
+
+# Environment and configuration
+python-decouple>=3.8
+
+# Logging and monitoring
+structlog>=23.1.0
+
+# Testing (optional for deployment)
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# Security
+cryptography>=41.0.0
+bcrypt>=4.1.0
+
+# Type hints
+typing-extensions>=4.8.0
+
+# Development tools (optional)
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.0.0
+
+# Web server for deployment
+gunicorn>=21.2.0
+uvicorn>=0.24.0
