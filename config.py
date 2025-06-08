@@ -43,10 +43,10 @@ class Config:
         """Create configuration from environment variables"""
         
         # Required Azure OpenAI configuration
-        azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
-        azure_api_key = os.getenv("AZURE_OPENAI_API_KEY")
-        azure_api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")
-        azure_deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "gpt-4o-mini")
+        azure_endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT")
+        azure_api_key = os.environ.get("AZURE_OPENAI_API_KEY")
+        azure_api_version = os.environ.get("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")
+        azure_deployment = os.environ.get("AZURE_OPENAI_DEPLOYMENT_NAME", "gpt-4o-mini")
         
         # Validate required configuration
         if not azure_endpoint:
@@ -62,29 +62,29 @@ class Config:
             AZURE_OPENAI_DEPLOYMENT_NAME=azure_deployment,
             
             # Application settings
-            APP_TITLE=os.getenv("APP_TITLE", "F1 Racer AI Agent"),
-            APP_DESCRIPTION=os.getenv("APP_DESCRIPTION", "AI-powered Formula 1 racer social media agent"),
-            DEBUG_MODE=os.getenv("DEBUG_MODE", "false").lower() == "true",
+            APP_TITLE=os.environ.get("APP_TITLE", "F1 Racer AI Agent"),
+            APP_DESCRIPTION=os.environ.get("APP_DESCRIPTION", "AI-powered Formula 1 racer social media agent"),
+            DEBUG_MODE=os.environ.get("DEBUG_MODE", "false").lower() == "true",
             
             # Authentication
-            SESSION_TIMEOUT_MINUTES=int(os.getenv("SESSION_TIMEOUT_MINUTES", "60")),
-            MAX_LOGIN_ATTEMPTS=int(os.getenv("MAX_LOGIN_ATTEMPTS", "5")),
-            LOGIN_RATE_LIMIT_MINUTES=int(os.getenv("LOGIN_RATE_LIMIT_MINUTES", "15")),
+            SESSION_TIMEOUT_MINUTES=int(os.environ.get("SESSION_TIMEOUT_MINUTES", "60")),
+            MAX_LOGIN_ATTEMPTS=int(os.environ.get("MAX_LOGIN_ATTEMPTS", "5")),
+            LOGIN_RATE_LIMIT_MINUTES=int(os.environ.get("LOGIN_RATE_LIMIT_MINUTES", "15")),
             
             # Agent defaults
-            DEFAULT_RACER_NAME=os.getenv("DEFAULT_RACER_NAME", "Lightning McQueen"),
-            DEFAULT_TEAM_NAME=os.getenv("DEFAULT_TEAM_NAME", "Rusteze Racing"),
-            DEFAULT_CIRCUIT=os.getenv("DEFAULT_CIRCUIT", "Nurburgring"),
-            DEFAULT_RACE=os.getenv("DEFAULT_RACE", "German Grand Prix"),
+            DEFAULT_RACER_NAME=os.environ.get("DEFAULT_RACER_NAME", "Lightning McQueen"),
+            DEFAULT_TEAM_NAME=os.environ.get("DEFAULT_TEAM_NAME", "Rusteze Racing"),
+            DEFAULT_CIRCUIT=os.environ.get("DEFAULT_CIRCUIT", "Nurburgring"),
+            DEFAULT_RACE=os.environ.get("DEFAULT_RACE", "German Grand Prix"),
             
             # LLM settings
-            LLM_TEMPERATURE=float(os.getenv("LLM_TEMPERATURE", "0.7")),
-            LLM_MAX_TOKENS=int(os.getenv("LLM_MAX_TOKENS", "500")),
-            LLM_TIMEOUT_SECONDS=int(os.getenv("LLM_TIMEOUT_SECONDS", "30")),
+            LLM_TEMPERATURE=float(os.environ.get("LLM_TEMPERATURE", "0.7")),
+            LLM_MAX_TOKENS=int(os.environ.get("LLM_MAX_TOKENS", "500")),
+            LLM_TIMEOUT_SECONDS=int(os.environ.get("LLM_TIMEOUT_SECONDS", "30")),
             
             # UI settings
-            SIDEBAR_WIDTH=int(os.getenv("SIDEBAR_WIDTH", "300")),
-            MAX_INTERACTION_HISTORY=int(os.getenv("MAX_INTERACTION_HISTORY", "50"))
+            SIDEBAR_WIDTH=int(os.environ.get("SIDEBAR_WIDTH", "300")),
+            MAX_INTERACTION_HISTORY=int(os.environ.get("MAX_INTERACTION_HISTORY", "50"))
         )
     
     def validate(self) -> bool:
@@ -165,19 +165,19 @@ def reload_config():
 
 def is_production() -> bool:
     """Check if running in production environment"""
-    return os.getenv("ENVIRONMENT", "development").lower() == "production"
+    return os.environ.get("ENVIRONMENT", "development").lower() == "production"
 
 def get_app_version() -> str:
     """Get application version"""
-    return os.getenv("APP_VERSION", "1.0.0")
+    return os.environ.get("APP_VERSION", "1.0.0")
 
 def get_deployment_info() -> dict:
     """Get deployment information"""
     return {
-        "environment": os.getenv("ENVIRONMENT", "development"),
+        "environment": os.environ.get("ENVIRONMENT", "development"),
         "version": get_app_version(),
-        "deployed_at": os.getenv("DEPLOYMENT_TIMESTAMP", "unknown"),
-        "commit_hash": os.getenv("COMMIT_HASH", "unknown"),
+        "deployed_at": os.environ.get("DEPLOYMENT_TIMESTAMP", "unknown"),
+        "commit_hash": os.environ.get("COMMIT_HASH", "unknown"),
         "is_production": is_production()
     }
 
@@ -193,16 +193,16 @@ def validate_environment() -> tuple[bool, list]:
     ]
     
     for var in required_vars:
-        if not os.getenv(var):
+        if not os.environ.get(var):
             errors.append(f"Missing required environment variable: {var}")
     
     # Check Azure OpenAI endpoint format
-    endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+    endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT")
     if endpoint and not endpoint.startswith("https://"):
         errors.append("AZURE_OPENAI_ENDPOINT must start with https://")
     
     # Check API version format
-    api_version = os.getenv("AZURE_OPENAI_API_VERSION")
+    api_version = os.environ.get("AZURE_OPENAI_API_VERSION")
     if api_version and not api_version.startswith("20"):
         errors.append("AZURE_OPENAI_API_VERSION should be in format YYYY-MM-DD-preview")
     
@@ -225,7 +225,7 @@ def get_env_info() -> dict:
 # Configuration for different environments
 def get_environment_config() -> dict:
     """Get environment-specific configuration"""
-    env = os.getenv("ENVIRONMENT", "development").lower()
+    env = os.environ.get("ENVIRONMENT", "development").lower()
     
     base_config = {
         "development": {
@@ -277,7 +277,7 @@ def health_check() -> dict:
     
     # Check Azure OpenAI connectivity (basic)
     try:
-        endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+        endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT")
         if endpoint:
             health["checks"]["azure_openai_endpoint"] = "configured"
         else:
