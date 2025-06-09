@@ -13,16 +13,6 @@ class AuthManager:
                 "password_hash": self._hash_password("f1racing2024"),
                 "role": "admin",
                 "display_name": "Administrator"
-            },
-            "driver": {
-                "password_hash": self._hash_password("speedster123"),
-                "role": "driver",
-                "display_name": "Racing Driver"
-            },
-            "fan": {
-                "password_hash": self._hash_password("motorsport"),
-                "role": "fan",
-                "display_name": "F1 Fan"
             }
         }
         
@@ -34,7 +24,7 @@ class AuthManager:
         return hashlib.sha256(password.encode()).hexdigest()
     
     def _load_env_users(self):
-        """Load additional users from environment variables"""
+        """Load additional users from environment variables. For app deployment"""
         # Check for custom admin credentials
         admin_username = os.getenv("ADMIN_USERNAME")
         admin_password = os.getenv("ADMIN_PASSWORD")
@@ -47,7 +37,7 @@ class AuthManager:
             }
         
         # Check for additional user credentials
-        for i in range(1, 6):  # Support up to 5 additional users
+        for i in range(1, 6):  # Support up to 5 additional users. Local development
             username = os.getenv(f"USER_{i}_USERNAME")
             password = os.getenv(f"USER_{i}_PASSWORD")
             role = os.getenv(f"USER_{i}_ROLE", "user")
